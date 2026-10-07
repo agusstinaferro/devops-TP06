@@ -32,7 +32,7 @@ jobs:
             --count --statistics
       - name: Lint YAML (yamllint)
         run: |
-          yamllint -c .yamllint \
+          yamllint \
             docker-compose.yml \
             .github/workflows/
 
