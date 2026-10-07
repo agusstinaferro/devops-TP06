@@ -1,0 +1,35 @@
+name: PR Check
+
+on:
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  validate:
+    name: Validar PR
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: 'pip'
+      - name: Instalar dependencias
+        run: pip install -r backend/requirements.txt
+      - name: Tests
+        run: cd backend && pytest tests/ -v
+      - name: Verificar docker-compose sintaxis
+        run: docker compose config --quiet
+      - name: Comentar resultado en el PR
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const status = '${{ job.status }}' === 'success' ? 'OK' : 'ERR';
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `${status} **PR Check** \nCommit: ${{ github.sha }}`
+            });
