@@ -37,7 +37,7 @@ jobs:
             docker-compose.yml \
             .github/workflows/
 
-test:
+  test:
     name: Test
     runs-on: ubuntu-latest
     needs: lint
@@ -148,7 +148,7 @@ test:
 #      - name: Healthcheck post-deploy
 #        run: |
 #          sleep 10
-#          STATUS=$(curl -s -o /dev/null -w "%{http_code}" --max-time 10 "http://${{ secrets.DEPLOY_HOST }}/health" || echo "000")
+#          STATUS=$(curl -s -o /dev/null -w "%{http_code}" --max-time 10 "http://${{ secrets.DEPLOY_HOST }}/health")
 #          if [ "$STATUS" = "200" ]; then
 #            echo "Deploy exitoso HTTP $STATUS"
 #          else
